@@ -25,7 +25,7 @@ Grab your free copy here 👉 [LANDING PAGE LINK]
 Use a different `utm_content` for each video so you can see which videos bring in leads:
 
 ```
-https://[YOUR-DOMAIN]/?utm_source=youtube&utm_medium=video&utm_campaign=relocation-guide&utm_content=[VIDEO-SLUG]
+https://dionjohnson-relocation.vercel.app/?utm_source=youtube&utm_medium=video&utm_campaign=relocation-guide&utm_content=[VIDEO-SLUG]
 ```
 
 | Where the link goes | utm_medium | Example utm_content |
