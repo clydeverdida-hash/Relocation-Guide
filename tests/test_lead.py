@@ -94,7 +94,8 @@ class FlowTests(unittest.TestCase):
         lofty_calls = [c for c in self.calls if "lofty" in c[1]]
         self.assertEqual([c[0] for c in lofty_calls], ["GET", "PUT"])
         self.assertTrue(lofty_calls[1][1].endswith("/leads/42"))
-        self.assertEqual(set(lofty_calls[1][3]), {"tagsAdd"})
+        self.assertEqual(set(lofty_calls[1][3]), {"tagsAdd", "tagsRemove"})
+        self.assertEqual(lofty_calls[1][3]["tagsRemove"], ["Marketing Consent - Yes"])
 
     def test_lofty_down_still_sends_guide(self):
         with mock.patch.object(lead, "http_json", self.fake_http(fail_lofty=True)):

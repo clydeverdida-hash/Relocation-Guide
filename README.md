@@ -15,7 +15,7 @@ YouTube video ──(UTM link)──> index.html ──form──> /api/lead ─
 |---|---|
 | Landing, thank-you, download and privacy pages | Built. Tested locally in a browser. |
 | Form validation, spam trap, thank-you redirect | Built. Tested locally. |
-| Lofty integration | Code written against Lofty's published API docs and unit-tested with mocks. **NOT yet tested against a real Lofty account.** Needs an API key (see below). |
+| Lofty integration | **Tested live on 2026-11-18** at https://relocation-guide-tau.vercel.app: a test submission created a Lofty lead (Source YouTube, type Buyer, owner Dion, all tags, tracking note), and resubmitting the same email updated that lead instead of duplicating it. |
 | Guide email + agent notification | Code written for Resend. **NOT yet tested with real sending.** Needs a Resend account and a verified sending domain. |
 | Relocation Guide PDF | Placeholder. Waiting on the client. |
 | Logo, headshot, contact info | Placeholders in `public/assets/config.js`. |

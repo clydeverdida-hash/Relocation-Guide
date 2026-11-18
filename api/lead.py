@@ -153,7 +153,9 @@ def upsert_lofty_lead(lead):
     existing = find_lofty_lead(lead["email"])
     if existing:
         # Duplicate: keep the existing record (source, stage, owner, tags) and only add our tags.
-        lofty("PUT", f"/leads/{int(existing)}", body={"tagsAdd": tags})
+        # Swap the consent tag so a lead never carries both "Yes" and "No".
+        stale = TAG_CONSENT_NO if lead["marketingConsent"] else TAG_CONSENT_YES
+        lofty("PUT", f"/leads/{int(existing)}", body={"tagsAdd": tags, "tagsRemove": [stale]})
         return "updated", existing
 
     first, last = split_name(lead["fullName"])
