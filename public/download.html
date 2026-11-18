@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Download Your Pacific Northwest Relocation Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<!--
+  Both the thank-you page button and the link in the confirmation email point here.
+  This page records a "guide_download" analytics event, then opens the PDF.
+-->
+<div class="top-bar">
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html"><span class="logo-name" data-config="agentName">Dion Johnson</span><span class="logo-sub" data-config="brokerage">eXp Realty</span></a>
+    </div>
+  </header>
+</div>
+
+<main class="container prose" style="text-align:center">
+  <h1>Your Relocation Guide</h1>
+  <div id="ready" hidden>
+    <p>Your download should start in a moment. If it doesn't, use the button below.</p>
+    <p><a class="btn btn-inline" id="pdf-link" href="#">OPEN MY GUIDE (PDF)</a></p>
+  </div>
+  <div id="pending">
+    <p class="notice">The guide is being finalized. We'll email it to you as soon as it's ready.</p>
+  </div>
+  <p><a href="index.html">Back to the home page</a></p>
+</main>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  (function () {
+    var pdf = (window.SITE_CONFIG || {}).guidePdf;
+    if (!pdf) return;
+    document.getElementById("ready").hidden = false;
+    document.getElementById("pending").hidden = true;
+    var link = document.getElementById("pdf-link");
+    link.href = pdf;
+    var src = new URLSearchParams(location.search).get("src") || "web";
+    window.track("guide_download", { method: src });
+    setTimeout(function () { location.href = pdf; }, 900);
+  })();
+</script>
+</body>
+</html>

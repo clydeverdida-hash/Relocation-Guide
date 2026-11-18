@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Thank You | Your Relocation Guide Is on Its Way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="index.html"><span class="logo-name" data-config="agentName">Dion Johnson</span><span class="logo-sub" data-config="brokerage">eXp Realty</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero simple-hero">
+    <div class="container">
+      <div class="check" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>
+      </div>
+      <h1>Thank you<span id="ty-name"></span> for requesting our Relocation Guide!</h1>
+      <p class="lead">We're excited to help you explore your next move. Check your inbox for your free guide.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="ty-card">
+      <h2>What happens next</h2>
+      <ul class="ty-steps">
+        <li><span class="num">1</span><span>Look for an email from <strong data-config="agentName">[Agent Name]</strong> with your guide. It usually arrives within a few minutes.</span></li>
+        <li><span class="num">2</span><span>Don't see it? Check your Promotions or Spam folder and mark it as "Not spam" so you get it next time.</span></li>
+        <li><span class="num">3</span><span>Have questions about a specific area? Just reply to the email. A real person reads every one.</span></li>
+      </ul>
+
+      <!-- Shown only once a guide PDF is set in assets/config.js -->
+      <div id="download-ready" hidden>
+        <a class="btn" id="download-btn" href="download.html">DOWNLOAD MY GUIDE NOW</a>
+      </div>
+      <div id="download-pending" class="notice">
+        Your guide is on its way to your inbox.
+      </div>
+
+      <p class="fine-print">Watching on YouTube? <a data-config-href="youtubeUrl" href="#" target="_blank" rel="noopener">Head back to the channel</a> for more Pacific Northwest videos.</p>
+    </div>
+  </div>
+  <div style="height:80px"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><strong data-config="agentName">[Agent Name]</strong> · <span data-config="brokerage">[Brokerage Name]</span></div>
+      <div><a href="privacy.html">Privacy Policy</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  (function () {
+    var name = "";
+    try { name = sessionStorage.getItem("leadFirstName") || ""; } catch (e) {}
+    if (name) document.getElementById("ty-name").textContent = ", " + name + ",";
+    if ((window.SITE_CONFIG || {}).guidePdf) {
+      document.getElementById("download-ready").hidden = false;
+      document.getElementById("download-pending").hidden = true;
+    }
+  })();
+</script>
+</body>
+</html>

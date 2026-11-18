@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Placeholder Pacific Northwest scene. Replace with a real photo (assets/hero.jpg) when available. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fb8c2"/>
+      <stop offset="0.55" stop-color="#d9d6c7"/>
+      <stop offset="1" stop-color="#efe2c8"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7f9ea6"/>
+      <stop offset="1" stop-color="#4d6c72"/>
+    </linearGradient>
+    <linearGradient id="peak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f4ee"/>
+      <stop offset="0.35" stop-color="#c9d2d3"/>
+      <stop offset="1" stop-color="#8ea3a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1180" cy="250" r="70" fill="#f7ead0" opacity="0.8"/>
+  <!-- distant volcano -->
+  <path d="M760 520 L1040 230 Q1065 210 1090 232 L1400 520 Z" fill="url(#peak)"/>
+  <path d="M1000 272 L1040 230 Q1065 210 1090 232 L1130 272 L1100 262 L1080 285 L1060 262 L1035 288 Z" fill="#ffffff" opacity="0.9"/>
+  <!-- far ridges -->
+  <path d="M0 560 L120 470 L240 520 L380 430 L520 510 L660 450 L820 530 L980 470 L1140 540 L1300 460 L1460 520 L1600 470 L1600 900 L0 900 Z" fill="#6f8a8c" opacity="0.75"/>
+  <!-- lake -->
+  <rect y="600" width="1600" height="300" fill="url(#water)"/>
+  <path d="M0 612 H1600" stroke="#c9d6d4" stroke-width="2" opacity="0.5"/>
+  <!-- mid ridge -->
+  <path d="M0 640 L160 560 L300 610 L440 545 L600 620 L0 700 Z" fill="#3f5a52"/>
+  <path d="M1000 630 L1180 548 L1330 600 L1460 540 L1600 590 L1600 700 L1000 700 Z" fill="#3f5a52"/>
+  <!-- evergreen silhouettes -->
+  <g fill="#1f3a32">
+    <path d="M0 900 V660 L40 600 L80 660 L60 660 L100 590 L140 660 L120 660 L170 570 L220 670 L200 670 L250 610 L300 690 L330 640 L380 720 L380 900 Z"/>
+    <path d="M1600 900 V640 L1560 580 L1520 650 L1540 650 L1490 560 L1440 660 L1460 660 L1410 600 L1360 690 L1380 690 L1330 630 L1280 720 L1250 680 L1210 760 L1210 900 Z"/>
+  </g>
+  <g fill="#16302a">
+    <path d="M0 900 V760 L60 690 L120 780 L170 720 L230 800 L290 740 L360 840 L440 790 L520 900 Z"/>
+    <path d="M1600 900 V750 L1530 680 L1470 780 L1420 720 L1360 810 L1300 760 L1230 850 L1150 820 L1080 900 Z"/>
+  </g>
+</svg>
