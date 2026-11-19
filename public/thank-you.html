@@ -25,28 +25,37 @@
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>
       </div>
       <h1>Thank you<span id="ty-name"></span> for requesting our Relocation Guide!</h1>
-      <p class="lead">We're excited to help you explore your next move. Check your inbox for your free guide.</p>
+      <p class="lead">We're excited to help you explore your next move. Your free guide is ready below.</p>
     </div>
   </section>
 
   <div class="container">
     <div class="ty-card">
-      <h2>What happens next</h2>
-      <ul class="ty-steps">
-        <li><span class="num">1</span><span>Look for an email from <strong data-config="agentName">[Agent Name]</strong> with your guide. It usually arrives within a few minutes.</span></li>
-        <li><span class="num">2</span><span>Don't see it? Check your Promotions or Spam folder and mark it as "Not spam" so you get it next time.</span></li>
-        <li><span class="num">3</span><span>Have questions about a specific area? Just reply to the email. A real person reads every one.</span></li>
-      </ul>
-
       <!-- Shown only once a guide PDF is set in assets/config.js -->
       <div id="download-ready" hidden>
-        <a class="btn" id="download-btn" href="download.html">DOWNLOAD MY GUIDE NOW</a>
+        <div class="ty-guide">
+          <img src="assets/guide/cover.jpg" alt="South Sound Relocation Guide cover" width="110" height="142">
+          <div>
+            <h2>Your South Sound Relocation Guide</h2>
+            <p>10 pages on communities, schools, weather, taxes, your first 30 days and buying from out of state.</p>
+          </div>
+        </div>
+        <a class="btn" id="download-btn" href="download.html?src=web">DOWNLOAD MY GUIDE</a>
       </div>
       <div id="download-pending" class="notice">
-        Your guide is on its way to your inbox.
+        Your guide is being finalized. We'll send it to you as soon as it's ready.
       </div>
 
-      <p class="fine-print">Watching on YouTube? <a data-config-href="youtubeUrl" href="#" target="_blank" rel="noopener">Head back to the channel</a> for more Pacific Northwest videos.</p>
+      <h2 class="ty-next">What happens next</h2>
+      <ul class="ty-steps">
+        <li><span class="num">1</span><span>Read through the guide and jot down the questions it raises. The "Not sure where you fit?" page is a great place to start.</span></li>
+        <li><span class="num">2</span><span>Book a free 30-minute Zoom relocation planning call with Dion &amp; Katy. We'll map out your timeline, neighborhoods and budget.</span></li>
+        <li><span class="num">3</span><span>Questions before then? Call or text Dion at <a data-config-href="phone" href="#"><span data-config="phone">(206) 250-6197</span></a>.</span></li>
+      </ul>
+
+      <a class="btn btn-outline" data-config-href="bookingUrl" href="#" target="_blank" rel="noopener">BOOK MY FREE ZOOM CALL</a>
+
+      <p class="fine-print">Watching on YouTube? Look for <strong>Living in the Pacific Northwest with Dion &amp; Katy</strong>, with new videos every Wednesday and Saturday.</p>
     </div>
   </div>
   <div style="height:80px"></div>
@@ -55,7 +64,7 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div><strong data-config="agentName">[Agent Name]</strong> · <span data-config="brokerage">[Brokerage Name]</span></div>
+      <div><strong data-config="agentName">Dion Johnson</strong> · <span data-config="brokerage">eXp Realty</span></div>
       <div><a href="privacy.html">Privacy Policy</a></div>
     </div>
   </div>

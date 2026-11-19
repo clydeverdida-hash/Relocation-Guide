@@ -207,7 +207,9 @@ def guide_email_html(lead):
         f"<p>Hi {first},</p>"
         "<p>Thank you for requesting our Relocation Guide! We're excited to help you explore your next move.</p>"
         f"{body}"
-        "<p>If you have questions about a specific town or neighborhood, just reply to this email.</p>"
+        "<p>When you're ready, book a free 30-minute Zoom relocation planning call: "
+        '<a href="https://calendly.com/dkjrealtors/30min">calendly.com/dkjrealtors/30min</a>. '
+        "Questions about a specific town or neighborhood? Just reply to this email.</p>"
         f"<p>Warm regards,<br>{agent}</p>"
         '<p style="font-size:12px;color:#5d6b67">You received this email because you requested the '
         "Relocation Guide on our website.</p></div>"

@@ -17,7 +17,7 @@ YouTube video ──(UTM link)──> index.html ──form──> /api/lead ─
 | Form validation, spam trap, thank-you redirect | Built. Tested locally. |
 | Lofty integration | **Tested live on 2026-11-18** at https://dionjohnson-relocation.vercel.app: a test submission created a Lofty lead (Source YouTube, type Buyer, owner Dion, all tags, tracking note), and resubmitting the same email updated that lead instead of duplicating it. |
 | Guide email + agent notification | Code written for Resend. **NOT yet tested with real sending.** Needs a Resend account and a verified sending domain. |
-| Relocation Guide PDF | Placeholder. Waiting on the client. |
+| Relocation Guide PDF | Live: `public/assets/guide/South-Sound-Relocation-Guide-Dion-Katy-Johnson.pdf` (10 pages, added 2026-11-20). |
 | Logo, headshot, contact info | Placeholders in `public/assets/config.js`. |
 
 ## Files

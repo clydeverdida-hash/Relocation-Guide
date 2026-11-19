@@ -9,6 +9,8 @@ window.SITE_CONFIG = {
   email: "dion.johnson@exprealty.com",
   address: "Serving Seattle & the South Sound",
   licenseLine: "Dion Johnson, REALTOR® | eXp Realty | Equal Housing Opportunity",
+  // Free Zoom relocation planning call (from the guide, page 10)
+  bookingUrl: "https://calendly.com/dkjrealtors/30min",
   youtubeUrl: "[https://www.youtube.com/@yourchannel]",
 
   // Logo and headshot: drop files in /assets and put their paths here (leave "" to show the placeholder).
@@ -16,7 +18,7 @@ window.SITE_CONFIG = {
   headshotSrc: "assets/dion-headshot.jpg",
 
   // Path of the guide PDF once the client supplies it. Leave "" until then.
-  guidePdf: "",      // e.g. "assets/guide/PNW-Relocation-Guide.pdf"
+  guidePdf: "assets/guide/South-Sound-Relocation-Guide-Dion-Katy-Johnson.pdf",
 
   // Google Analytics 4 measurement ID (looks like "G-XXXXXXXXXX"). Leave "" to turn tracking off.
   ga4Id: ""
