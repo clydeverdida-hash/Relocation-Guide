@@ -164,6 +164,8 @@ def upsert_lofty_lead(lead):
         "emails": [lead["email"]],
         "source": lead_source(lead["utm"]),
         "tags": tags,
+        # Lofty emails the assigned agent (Dion) about the new lead. Turn off with LOFTY_LEAD_ALERT=false.
+        "leadAlert": env("LOFTY_LEAD_ALERT", "true").lower() != "false",
     }
     if last:
         body["lastName"] = last

@@ -82,6 +82,7 @@ class FlowTests(unittest.TestCase):
         self.assertEqual(post[3]["emails"], ["jane@example.com"])
         self.assertEqual(post[3]["source"], "YouTube")
         self.assertEqual(post[3]["leadTypes"], [2])
+        self.assertIs(post[3]["leadAlert"], True)
         self.assertIn("YouTube Relocation Guide", post[3]["tags"])
         self.assertIn("Marketing Consent - No", post[3]["tags"])
         emails = [c for c in self.calls if "resend" in c[1]]
