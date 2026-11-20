@@ -133,6 +133,18 @@
       })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, data: d }; }); })
         .then(function (res) {
+          // If the server asks for a field this copy of the form doesn't have, the page is
+          // out of date (e.g. a tab left open across an update). Reload to get the current form.
+          var fields = (res.data && res.data.fields) || {};
+          var missing = Object.keys(fields).filter(function (k) { return !form.elements[k]; });
+          var alreadyRefreshed = false;
+          try { alreadyRefreshed = sessionStorage.getItem("formRefreshed") === "1"; } catch (e4) {}
+          if (missing.length && !alreadyRefreshed) {
+            try { sessionStorage.setItem("formRefreshed", "1"); } catch (e3) {}
+            var q = new URLSearchParams(location.search); q.set("refresh", Date.now());
+            location.replace(location.pathname + "?" + q.toString() + location.hash);
+            return new Promise(function () {});
+          }
           if (!res.ok || !res.data.ok) throw new Error(res.data.error || "Something went wrong.");
           window.track("generate_lead", {
             form: "relocation_guide",
@@ -140,7 +152,7 @@
             campaign: utm.utm_campaign || "",
             video: utm.utm_content || ""
           });
-          try { sessionStorage.setItem("leadFirstName", payload.fullName.split(" ")[0]); } catch (e2) {}
+          try { sessionStorage.setItem("leadFirstName", payload.fullName.split(" ")[0]); sessionStorage.removeItem("formRefreshed"); } catch (e2) {}
           // Small delay lets the analytics hit go out before navigating.
           setTimeout(function () { location.href = "thank-you.html"; }, 250);
         })

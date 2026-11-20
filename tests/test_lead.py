@@ -37,12 +37,17 @@ class ValidationTests(unittest.TestCase):
                      {"fullName": "Jane", "email": "nope", "phone": ok_phone},
                      {"fullName": "<script>", "email": "a@b.co", "phone": ok_phone},
                      {"fullName": "Jane", "email": "a@b", "phone": ok_phone},
-                     {"fullName": "Jane", "email": "a@b.co"},
+                     {"fullName": "Jane", "email": "a@b.co", "phone": ""},
                      {"fullName": "Jane", "email": "a@b.co", "phone": "555-1234"},
                      {"fullName": "Jane", "email": "a@b.co", "phone": "123-456-7890"},
                      "notadict"):
             _, err = lead.validate(data)
             self.assertTrue(err, data)
+
+    def test_old_form_without_phone_key_is_accepted(self):
+        l, err = lead.validate({"fullName": "Jane Smith", "email": "jane@example.com"})
+        self.assertEqual(err, {})
+        self.assertEqual(l["phone"], "")
 
     def test_phone_normalization(self):
         n = lead.normalize_phone
@@ -125,6 +130,14 @@ class FlowTests(unittest.TestCase):
             status, _ = lead.process(GOOD)
         self.assertEqual(status, 200)
         self.assertEqual(attempts["put"], 3)
+
+    def test_old_form_lead_sent_without_phones(self):
+        old = {k: v for k, v in GOOD.items() if k != "phone"}
+        with mock.patch.object(lead, "http_json", self.fake_http()):
+            status, _ = lead.process(old)
+        self.assertEqual(status, 200)
+        post = [c for c in self.calls if c[0] == "POST" and "lofty" in c[1]][0]
+        self.assertNotIn("phones", post[3])
 
     def test_duplicate_only_adds_tags(self):
         with mock.patch.object(lead, "http_json", self.fake_http(existing=42)):

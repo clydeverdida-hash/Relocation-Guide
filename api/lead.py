@@ -72,9 +72,14 @@ def validate(data):
         errors["fullName"] = "Please enter your full name."
     if not EMAIL_RE.match(email) or len(email) > 254:
         errors["email"] = "Please enter a valid email address."
-    phone = normalize_phone(data.get("phone"))
-    if not phone:
-        errors["phone"] = "Please enter a valid phone number."
+    # The current form always sends "phone". A browser still showing an older copy of the page
+    # (opened before the phone field existed) sends no "phone" key at all; accept that lead
+    # without a number rather than showing an error the visitor can't fix.
+    phone = ""
+    if "phone" in data:
+        phone = normalize_phone(data.get("phone"))
+        if not phone:
+            errors["phone"] = "Please enter a valid phone number."
 
     utm_in = data.get("utm") if isinstance(data.get("utm"), dict) else {}
     utm = {k: clean_text(utm_in.get(k), 100) for k in UTM_KEYS if utm_in.get(k)}
@@ -178,7 +183,6 @@ def upsert_lofty_lead(lead):
     body = {
         "firstName": first,
         "emails": [lead["email"]],
-        "phones": [lead["phone"]],
         "source": lead_source(lead["utm"]),
         # The guide tag is added in a second call (below) so Lofty sees a "tag added" event,
         # which is what triggers the "YouTube Relocation Guide - Guide Delivery" Smart Plan.
@@ -186,6 +190,8 @@ def upsert_lofty_lead(lead):
         # Lofty emails the assigned agent (Dion) about the new lead. Turn off with LOFTY_LEAD_ALERT=false.
         "leadAlert": env("LOFTY_LEAD_ALERT", "true").lower() != "false",
     }
+    if lead.get("phone"):
+        body["phones"] = [lead["phone"]]
     if last:
         body["lastName"] = last
     lead_types = [int(x) for x in env("LOFTY_LEAD_TYPE", "2").split(",") if x.strip().lstrip("-").isdigit()]
