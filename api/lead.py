@@ -72,6 +72,9 @@ def validate(data):
         errors["fullName"] = "Please enter your full name."
     if not EMAIL_RE.match(email) or len(email) > 254:
         errors["email"] = "Please enter a valid email address."
+    phone = normalize_phone(data.get("phone"))
+    if not phone:
+        errors["phone"] = "Please enter a valid phone number."
 
     utm_in = data.get("utm") if isinstance(data.get("utm"), dict) else {}
     utm = {k: clean_text(utm_in.get(k), 100) for k in UTM_KEYS if utm_in.get(k)}
@@ -79,11 +82,23 @@ def validate(data):
     lead = {
         "fullName": name,
         "email": email,
+        "phone": phone,
         "marketingConsent": data.get("marketingConsent") is True,
         "utm": utm,
         "honeypot": clean_text(data.get("website"), 200),
     }
     return lead, errors
+
+
+def normalize_phone(raw):
+    """US numbers in any format -> +1XXXXXXXXXX; international numbers must start with +."""
+    value = str(raw or "").strip()
+    digits = re.sub(r"\D", "", value)
+    if value.startswith("+"):
+        return "+" + digits if 8 <= len(digits) <= 15 else ""
+    if len(digits) == 11 and digits.startswith("1"):
+        digits = digits[1:]
+    return "+1" + digits if len(digits) == 10 and digits[0] in "23456789" else ""
 
 
 def split_name(full):
@@ -163,6 +178,7 @@ def upsert_lofty_lead(lead):
     body = {
         "firstName": first,
         "emails": [lead["email"]],
+        "phones": [lead["phone"]],
         "source": lead_source(lead["utm"]),
         # The guide tag is added in a second call (below) so Lofty sees a "tag added" event,
         # which is what triggers the "YouTube Relocation Guide - Guide Delivery" Smart Plan.
@@ -242,6 +258,7 @@ def notify_email_html(lead, lofty_result):
     rows = [
         ("Name", lead["fullName"]),
         ("Email", lead["email"]),
+        ("Phone", lead.get("phone", "")),
         ("Marketing consent", "Yes" if lead["marketingConsent"] else "No"),
         ("Lofty", lofty_result),
     ] + [(k, v) for k, v in lead["utm"].items()]

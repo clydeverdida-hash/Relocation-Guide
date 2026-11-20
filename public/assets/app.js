@@ -70,12 +70,20 @@
   });
 
   function setupForm(form) {
-    var nameEl = form.elements.fullName, emailEl = form.elements.email;
+    var nameEl = form.elements.fullName, emailEl = form.elements.email, phoneEl = form.elements.phone;
     var btn = form.querySelector("button[type=submit]");
     var status = form.querySelector(".form-status");
     var btnLabel = btn.textContent;
     var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+    // US numbers in any format (10 digits, optional leading 1), or international starting with +.
+    function normalizePhone(raw) {
+      var v = (raw || "").trim();
+      var digits = v.replace(/\D/g, "");
+      if (v.charAt(0) === "+") return digits.length >= 8 && digits.length <= 15 ? "+" + digits : "";
+      if (digits.length === 11 && digits.charAt(0) === "1") digits = digits.slice(1);
+      return digits.length === 10 && /^[2-9]/.test(digits) ? "+1" + digits : "";
+    }
     function setError(input, msg) {
       var err = document.getElementById(input.id + "-error");
       input.setAttribute("aria-invalid", msg ? "true" : "false");
@@ -90,22 +98,29 @@
       var email = emailEl.value.trim();
       if (!EMAIL_RE.test(email) || email.length > 254) { setError(emailEl, "Please enter a valid email address."); ok = false; }
       else setError(emailEl, "");
+      if (phoneEl) {
+        if (!normalizePhone(phoneEl.value)) { setError(phoneEl, "Please enter a valid phone number."); ok = false; }
+        else setError(phoneEl, "");
+      }
       return ok;
     }
     nameEl.addEventListener("blur", function () { if (nameEl.value) validate(); });
     emailEl.addEventListener("blur", function () { if (emailEl.value) validate(); });
+    if (phoneEl) phoneEl.addEventListener("blur", function () { if (phoneEl.value) validate(); });
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       status.textContent = "";
       if (!validate()) {
-        (nameEl.getAttribute("aria-invalid") === "true" ? nameEl : emailEl).focus();
+        var firstBad = [nameEl, emailEl, phoneEl].filter(function (el) { return el && el.getAttribute("aria-invalid") === "true"; })[0];
+        if (firstBad) firstBad.focus();
         return;
       }
       btn.disabled = true; btn.textContent = "Sending…";
       var payload = {
         fullName: nameEl.value.trim().replace(/\s+/g, " "),
         email: emailEl.value.trim(),
+        phone: phoneEl ? normalizePhone(phoneEl.value) : "",
         marketingConsent: !!(form.elements.marketingConsent && form.elements.marketingConsent.checked),
         website: form.elements.website ? form.elements.website.value : "",
         utm: utm,

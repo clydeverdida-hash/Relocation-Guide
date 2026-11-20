@@ -46,7 +46,7 @@
 
       <form id="lead-form" class="form-card" novalidate>
         <h2>Get Your Free Guide</h2>
-        <p class="sub">Just two quick details and it's yours.</p>
+        <p class="sub">Just a few quick details and it's yours.</p>
 
         <div class="field">
           <label for="fullName">Full Name</label>
@@ -57,6 +57,11 @@
           <label for="email">Email Address</label>
           <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" aria-describedby="email-error">
           <div class="error" id="email-error" aria-live="polite"></div>
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" placeholder="(555) 555-5555" aria-describedby="phone-error">
+          <div class="error" id="phone-error" aria-live="polite"></div>
         </div>
 
         <!-- Spam trap: hidden from people, bots fill it in -->
@@ -72,7 +77,7 @@
 
         <button class="btn" type="submit">GET MY FREE RELOCATION GUIDE</button>
         <div class="form-status" role="alert" aria-live="assertive"></div>
-        <p class="fine-print">Your guide opens right after you submit. We never sell your information. See my <a href="privacy.html">Privacy Policy</a>.</p>
+        <p class="fine-print">Your guide opens right after you submit. By submitting, you agree that Dion &amp; Katy Johnson (eXp Realty) may call or text you at the number above about your move. Consent is not a condition of any purchase. Msg &amp; data rates may apply; reply STOP to opt out. We never sell your information. See my <a href="privacy.html">Privacy Policy</a>.</p>
       </form>
     </div>
   </section>

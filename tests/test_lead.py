@@ -18,7 +18,7 @@ BASE_ENV = {
     "NOTIFY_EMAIL": "agent@example.com",
     "DRY_RUN": "",
 }
-GOOD = {"fullName": "  Jane   Q Smith ", "email": "Jane@Example.com",
+GOOD = {"fullName": "  Jane   Q Smith ", "email": "Jane@Example.com", "phone": "(206) 555-0142",
         "utm": {"utm_source": "youtube", "utm_campaign": "relocation-guide", "utm_content": "seattle-vs-portland"}}
 
 
@@ -31,11 +31,27 @@ class ValidationTests(unittest.TestCase):
         self.assertFalse(l["marketingConsent"])
 
     def test_bad_inputs(self):
-        for data in ({"fullName": "", "email": "a@b.co"}, {"fullName": "A", "email": "a@b.co"},
-                     {"fullName": "Jane", "email": "nope"}, {"fullName": "<script>", "email": "a@b.co"},
-                     {"fullName": "Jane", "email": "a@b"}, "notadict"):
+        ok_phone = "2065550142"
+        for data in ({"fullName": "", "email": "a@b.co", "phone": ok_phone},
+                     {"fullName": "A", "email": "a@b.co", "phone": ok_phone},
+                     {"fullName": "Jane", "email": "nope", "phone": ok_phone},
+                     {"fullName": "<script>", "email": "a@b.co", "phone": ok_phone},
+                     {"fullName": "Jane", "email": "a@b", "phone": ok_phone},
+                     {"fullName": "Jane", "email": "a@b.co"},
+                     {"fullName": "Jane", "email": "a@b.co", "phone": "555-1234"},
+                     {"fullName": "Jane", "email": "a@b.co", "phone": "123-456-7890"},
+                     "notadict"):
             _, err = lead.validate(data)
             self.assertTrue(err, data)
+
+    def test_phone_normalization(self):
+        n = lead.normalize_phone
+        self.assertEqual(n("(206) 250-6197"), "+12062506197")
+        self.assertEqual(n("206.250.6197"), "+12062506197")
+        self.assertEqual(n("1-206-250-6197"), "+12062506197")
+        self.assertEqual(n("+44 20 7946 0958"), "+442079460958")
+        for bad in ("", "555-1234", "123-456-7890", "+12", "abc"):
+            self.assertEqual(n(bad), "", bad)
 
     def test_split_and_tags(self):
         self.assertEqual(lead.split_name("Jane Q Smith"), ("Jane", "Q Smith"))
@@ -80,6 +96,7 @@ class FlowTests(unittest.TestCase):
         self.assertEqual(post[3]["firstName"], "Jane")
         self.assertEqual(post[3]["lastName"], "Q Smith")
         self.assertEqual(post[3]["emails"], ["jane@example.com"])
+        self.assertEqual(post[3]["phones"], ["+12065550142"])
         self.assertEqual(post[3]["source"], "YouTube")
         self.assertEqual(post[3]["leadTypes"], [2])
         self.assertIs(post[3]["leadAlert"], True)
