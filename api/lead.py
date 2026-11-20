@@ -28,6 +28,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -163,7 +164,9 @@ def upsert_lofty_lead(lead):
         "firstName": first,
         "emails": [lead["email"]],
         "source": lead_source(lead["utm"]),
-        "tags": tags,
+        # The guide tag is added in a second call (below) so Lofty sees a "tag added" event,
+        # which is what triggers the "YouTube Relocation Guide - Guide Delivery" Smart Plan.
+        "tags": [t for t in tags if t != TAG_GUIDE],
         # Lofty emails the assigned agent (Dion) about the new lead. Turn off with LOFTY_LEAD_ALERT=false.
         "leadAlert": env("LOFTY_LEAD_ALERT", "true").lower() != "false",
     }
@@ -179,7 +182,24 @@ def upsert_lofty_lead(lead):
             f"{k}={v}" for k, v in lead["utm"].items()
         )
     res = lofty("POST", "/leads", body=body)
-    return "created", res.get("leadId")
+    lead_id = res.get("leadId")
+    if lead_id:
+        add_tag_with_retry(lead_id, TAG_GUIDE)
+    return "created", lead_id
+
+
+def add_tag_with_retry(lead_id, tag, attempts=4, wait_seconds=1.0):
+    """Lofty returns the new leadId before the lead is readable, so the first update can 404."""
+    for attempt in range(attempts):
+        try:
+            lofty("PUT", f"/leads/{int(lead_id)}", body={"tagsAdd": [tag]})
+            return True
+        except ApiError as e:
+            if e.status != 404 or attempt == attempts - 1:
+                log("Could not add tag", tag, "to lead", lead_id, ":", e)
+                return False
+            time.sleep(wait_seconds)
+    return False
 
 
 # ---------------------------------------------------------------- Email (Resend)

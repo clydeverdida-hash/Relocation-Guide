@@ -83,10 +83,31 @@ class FlowTests(unittest.TestCase):
         self.assertEqual(post[3]["source"], "YouTube")
         self.assertEqual(post[3]["leadTypes"], [2])
         self.assertIs(post[3]["leadAlert"], True)
-        self.assertIn("YouTube Relocation Guide", post[3]["tags"])
+        # Guide tag is left off the create call and added right after, to fire Lofty's tag trigger.
+        self.assertNotIn("YouTube Relocation Guide", post[3]["tags"])
+        self.assertIn("Relocation", post[3]["tags"])
+        put = self.calls[2]
+        self.assertEqual(put[0], "PUT")
+        self.assertTrue(put[1].endswith("/leads/555"))
+        self.assertEqual(put[3], {"tagsAdd": ["YouTube Relocation Guide"]})
         self.assertIn("Marketing Consent - No", post[3]["tags"])
         emails = [c for c in self.calls if "resend" in c[1]]
         self.assertEqual([e[3]["to"] for e in emails], [["jane@example.com"], ["agent@example.com"]])
+
+    def test_guide_tag_retries_until_lead_is_readable(self):
+        attempts = {"put": 0}
+        base = self.fake_http()
+        def flaky(method, url, headers, body=None, service="api", timeout=12):
+            if service == "Lofty" and method == "PUT":
+                attempts["put"] += 1
+                if attempts["put"] < 3:
+                    self.calls.append((method, url, headers, body))
+                    raise lead.ApiError("Lofty", 404, "not found yet")
+            return base(method, url, headers, body, service, timeout)
+        with mock.patch.object(lead, "http_json", flaky), mock.patch.object(lead.time, "sleep"):
+            status, _ = lead.process(GOOD)
+        self.assertEqual(status, 200)
+        self.assertEqual(attempts["put"], 3)
 
     def test_duplicate_only_adds_tags(self):
         with mock.patch.object(lead, "http_json", self.fake_http(existing=42)):
